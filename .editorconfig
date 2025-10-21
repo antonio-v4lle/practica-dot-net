@@ -1,0 +1,39 @@
+# EditorConfig ayuda a mantener estilos de código consistentes
+# https://editorconfig.org
+
+root = true
+
+# Configuración para todos los archivos
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Archivos C#
+[*.cs]
+indent_style = space
+indent_size = 4
+
+# Archivos de configuración
+[*.{json,yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# Archivos de proyecto
+[*.{csproj,vbproj,vcxproj,proj,projitems,shproj}]
+indent_style = space
+indent_size = 2
+
+# Archivos de solución
+[*.sln]
+indent_style = tab
+
+# Scripts
+[*.{sh,bash}]
+indent_style = space
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false

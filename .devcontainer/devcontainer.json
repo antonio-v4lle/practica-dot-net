@@ -1,0 +1,66 @@
+{
+    "name": "C# .NET Core/8.0 Development Environment",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".",
+        "args": {
+            "DOTNET_VERSION": "8.0"
+        }
+    },
+    "workspaceFolder": "/workspaces",
+    "remoteUser": "coder",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-dotnettools.csharp",
+                "ms-dotnettools.vscode-dotnet-runtime",
+                "formulahendry.dotnet-test-explorer",
+                "ms-vscode.vscode-json",
+                "ms-vscode.powershell",
+                "GitHub.copilot",
+                "GitHub.copilot-chat",
+                "ms-vscode.vscode-xml",
+                "k--kato.docomment",
+                "ms-vscode.vscode-nuget-package-manager",
+                "fernandoescolar.vscode-solution-explorer",
+                "jmrog.vscode-nuget-package-manager",
+                "streetsidesoftware.code-spell-checker",
+                "ryanluker.vscode-coverage-gutters",
+                "kreativ-software.csharpextensions",
+                "jorgeserrano.vscode-csharp-snippets",
+                "tintoy.msbuild-project-tools"
+            ],
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "dotnet.server.useOmnisharp": true,
+                "editor.formatOnSave": true,
+                "editor.rulers": [
+                    120
+                ],
+                "omnisharp.enableDecompilationSupport": true,
+                "omnisharp.enableImportCompletion": true,
+                "csharp.format.enable": true,
+                "csharp.inlayHints.enableInlayHintsForParameters": true,
+                "csharp.inlayHints.enableInlayHintsForTypes": true,
+                "csharp.inlayHints.enableInlayHintsForLambdaParameterTypes": true,
+                "editor.formatOnType": true,
+                "omnisharp.enableEditorConfigSupport": true,
+                "omnisharp.enableRoslynAnalyzers": true,
+                "dotnet.completion.showCompletionItemsFromUnimportedNamespaces": true
+            }
+        }
+    },
+    "forwardPorts": [
+        5000,
+        5001,
+        5002
+    ],
+    "postCreateCommand": "bash /workspaces/.devcontainer/post-create.sh",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/workspaces,type=bind,consistency=cached"
+    ]
+}
