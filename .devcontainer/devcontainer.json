@@ -1,10 +1,10 @@
 {
-    "name": "C# .NET Core/8.0 Development Environment",
+    "name": "C# .NET Core/10.0 RC Development Environment",
     "build": {
         "dockerfile": "Dockerfile",
         "context": ".",
         "args": {
-            "DOTNET_VERSION": "8.0"
+            "DOTNET_VERSION": "10.0"
         }
     },
     "workspaceFolder": "/workspaces",
@@ -16,16 +16,19 @@
     "customizations": {
         "vscode": {
             "extensions": [
+                "ms-dotnettools.csdevkit",
+                "ms-dotnettools.vscodeintellicode-csharp",
                 "ms-dotnettools.csharp",
                 "ms-dotnettools.vscode-dotnet-runtime",
-                "formulahendry.dotnet-test-explorer",
+                "ms-vscode.vscode-nuget-package-manager",
+                "ms-vscode.vscode-xml",
                 "ms-vscode.vscode-json",
                 "ms-vscode.powershell",
+                "ms-dotnettools.vscode-dotnet-pack",
+                "formulahendry.dotnet-test-explorer",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
-                "ms-vscode.vscode-xml",
                 "k--kato.docomment",
-                "ms-vscode.vscode-nuget-package-manager",
                 "fernandoescolar.vscode-solution-explorer",
                 "jmrog.vscode-nuget-package-manager",
                 "streetsidesoftware.code-spell-checker",
