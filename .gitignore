@@ -186,3 +186,5 @@ BenchmarkDotNet.Artifacts/
 # Coder workspace specific
 .coder/
 workspace_output/
+
+.fake
