@@ -1,4 +1,4 @@
-internal class IterationChallengeI
+internal class IterationChallenge1
 {
     private static Dictionary<string, int> _grades = null!;
     public void run()
