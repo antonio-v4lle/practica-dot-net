@@ -1,3 +1,0 @@
-Student         Exam Score      Overall Grade   Extra Credit
-123456789012345612345678901234561234567812345678123456789012
-     16                16            8      8         12          

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ConsumerMiAccessModifiers/ConsumerMiAccessModifiers.csproj" />
+  <Project Path="MiAccessModifiers/MiAccessModifiers.csproj" />
+</Solution>
