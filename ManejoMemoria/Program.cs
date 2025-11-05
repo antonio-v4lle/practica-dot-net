@@ -9,6 +9,7 @@ class Program
     {
         // var summary = BenchmarkRunner.Run<StringConcatBenchmark>();
         // var summary = BenchmarkRunner.Run<CollectionBenchmark>();
-        var summary = BenchmarkRunner.Run<PoolingBenchmark>();
+        // var summary = BenchmarkRunner.Run<PoolingBenchmark>();
+        var summary = BenchmarkRunner.Run<SpanBenchmark>();
     }
 }
