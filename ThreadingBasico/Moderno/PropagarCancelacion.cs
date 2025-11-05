@@ -37,9 +37,6 @@ public class PropagarCancelacion
             Console.WriteLine(ex.Message);
             throw;
         }
-
-
-
     }
 
     public static void DoMyABCAsync(int Id)

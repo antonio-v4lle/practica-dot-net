@@ -1,5 +1,6 @@
-﻿using ThreadingBasico.Moderno;
-using static ThreadingBasico.Moderno.PropagarCancelacion;
+﻿// using ThreadingBasico.Moderno;
+// using static ThreadingBasico.Moderno.PropagarCancelacion;
+using static ThreadingBasico.Moderno.SinManejoConcurrencia;
 namespace ThreadingBasico
 {
     public class Program
@@ -38,9 +39,6 @@ namespace ThreadingBasico
 
             // Task task2 = Task.Run(() => DoMyXYZAsync(1, cancellationToken));
 
-
-
-
             // for (int i = 0; i < 100; i++)
             // {
             //     accumulator += 12;
@@ -52,6 +50,14 @@ namespace ThreadingBasico
             //         break;
             //     }
             // }
+            var _lock = new object();
+            for (int i = 0; i < 70; i++)
+            {
+                // Task.Run(() => DisminuirRecurso(new Random().Next(1, 60) * 10, i));
+                Task.Run(() => DisminuirRecursoConLock(new Random().Next(1, 60) * 10, i, _lock));
+            }
+
+
 
             Console.ReadLine();
         }
