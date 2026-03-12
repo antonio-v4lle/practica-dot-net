@@ -1,6 +1,27 @@
 @Payments.Api_HostAddress = http://localhost:5283
 
-GET {{Payments.Api_HostAddress}}/weatherforecast/
+### Create a charge
+POST {{Payments.Api_HostAddress}}/payments/charges
+Content-Type: application/json
+
+{
+  "amount": 150.00,
+  "description": "Monthly subscription"
+}
+
+### Create a payment
+POST {{Payments.Api_HostAddress}}/payments/payments
+Content-Type: application/json
+
+{
+  "amount": 50.00,
+  "description": "Partial payment"
+}
+
+### Get balance
+GET {{Payments.Api_HostAddress}}/payments/balance
 Accept: application/json
 
-###
+### Get all transactions
+GET {{Payments.Api_HostAddress}}/payments/transactions
+Accept: application/json

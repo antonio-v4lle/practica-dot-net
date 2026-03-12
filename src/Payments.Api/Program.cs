@@ -1,12 +1,16 @@
+using Payments.Core.DTOs;
+using Payments.Core.Interfaces;
+using Payments.Core.Services;
+using Payments.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddSingleton<ITransactionRepository, InMemoryTransactionRepository>();
+builder.Services.AddSingleton<IPaymentService, PaymentService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -14,28 +18,50 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
+app.MapPost("/payments/charges", async (CreateTransactionRequest request, IPaymentService service) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    try
+    {
+        var result = await service.CreateChargeAsync(request);
+        return Results.Created($"/payments/transactions/{result.Id}", result);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
 })
-.WithName("GetWeatherForecast");
+.WithName("CreateCharge")
+.WithTags("Payments");
+
+app.MapPost("/payments/payments", async (CreateTransactionRequest request, IPaymentService service) =>
+{
+    try
+    {
+        var result = await service.CreatePaymentAsync(request);
+        return Results.Created($"/payments/transactions/{result.Id}", result);
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { error = ex.Message });
+    }
+})
+.WithName("CreatePayment")
+.WithTags("Payments");
+
+app.MapGet("/payments/balance", async (IPaymentService service) =>
+{
+    var balance = await service.GetBalanceAsync();
+    return Results.Ok(balance);
+})
+.WithName("GetBalance")
+.WithTags("Payments");
+
+app.MapGet("/payments/transactions", async (IPaymentService service) =>
+{
+    var transactions = await service.GetTransactionsAsync();
+    return Results.Ok(transactions);
+})
+.WithName("GetTransactions")
+.WithTags("Payments");
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
