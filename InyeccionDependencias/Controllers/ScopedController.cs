@@ -25,6 +25,10 @@ public class ScopedController : Controller
         _paymentService.ProcessPayment();
 
         // Los 3 imprimen el MISMO RequestId
-        return Ok();
+        return Ok(new {
+            ControllerRequestId = _context.RequestId,
+            OrderServiceRequestId = _orderService.GetRequestId(),
+            PaymentServiceRequestId = _paymentService.GetRequestId(),
+        });
     }
 }

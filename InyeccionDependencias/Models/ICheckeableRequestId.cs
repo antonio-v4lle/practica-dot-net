@@ -1,0 +1,4 @@
+interface ICheckeableRequestId
+{
+    Guid GetRequestId();
+}

@@ -1,6 +1,6 @@
 namespace InyeccionDependencias.Models;
 
-public class PaymentService
+public class PaymentService : ICheckeableRequestId
 {
     private readonly IRequestContext _context;
 
@@ -13,5 +13,10 @@ public class PaymentService
     {
         Console.WriteLine($"PaymentService usando request: {_context.RequestId}");
         // Mismo RequestId que OrderService!
+    }
+
+    public Guid GetRequestId()
+    {
+        return _context.RequestId;
     }
 }
