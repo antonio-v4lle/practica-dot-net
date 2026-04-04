@@ -27,10 +27,24 @@ public class CreditLineRepository(FamilyFinanceDbContext context) : ICreditLineR
     public async Task AddAsync(CreditLine creditLine, CancellationToken ct = default) =>
         await context.CreditLines.AddAsync(creditLine, ct);
 
-    public Task UpdateAsync(CreditLine creditLine, CancellationToken ct = default)
+    public async Task UpdateAsync(CreditLine creditLine, CancellationToken ct = default)
     {
-        // Already tracked by EF Core change tracker.
-        return Task.CompletedTask;
+        // Explicitly register new payment entities (Guid.NewGuid() keys) as Added,
+        // same pattern as FamilyGroupRepository for Member children.
+        var prevAutoDetect = context.ChangeTracker.AutoDetectChangesEnabled;
+        context.ChangeTracker.AutoDetectChangesEnabled = false;
+        try
+        {
+            foreach (var payment in creditLine.Payments)
+            {
+                if (context.Entry(payment).State == EntityState.Detached)
+                    await context.CreditPayments.AddAsync(payment, ct);
+            }
+        }
+        finally
+        {
+            context.ChangeTracker.AutoDetectChangesEnabled = prevAutoDetect;
+        }
     }
 
     public async Task DeleteAsync(Guid id, CancellationToken ct = default)
