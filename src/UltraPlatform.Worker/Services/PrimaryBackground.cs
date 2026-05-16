@@ -6,9 +6,9 @@ namespace UltraPlatform.Worker.Services;
 internal class PrimaryBackground : BackgroundService
 {
     private readonly ILogger<PrimaryBackground> _logger;
-    private readonly DataService _dataService;
+    private readonly DataFilteredService _dataService;
 
-    public PrimaryBackground(ILogger<PrimaryBackground> logger, DataService dataService)
+    public PrimaryBackground(ILogger<PrimaryBackground> logger, DataFilteredService dataService)
     {
         _logger = logger;
         _dataService = dataService;
