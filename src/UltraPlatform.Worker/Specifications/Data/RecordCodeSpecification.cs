@@ -3,9 +3,9 @@ using UltraPlatform.Worker.Models;
 namespace UltraPlatform.Worker.Specifications.Data;
 
 /// <summary>
-/// Specification for filtering records by code pattern.
+/// Generic specification for filtering records by code pattern.
 /// </summary>
-public class RecordCodeSpecification : Specification
+public class RecordCodeSpecification : Specification<DataRecord>
 {
     private readonly string _codePattern;
     private readonly bool _exclude;

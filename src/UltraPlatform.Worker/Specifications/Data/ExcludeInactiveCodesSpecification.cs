@@ -3,9 +3,9 @@ using UltraPlatform.Worker.Models;
 namespace UltraPlatform.Worker.Specifications.Data;
 
 /// <summary>
-/// Specification that excludes records with specific codes (e.g., test/inactive codes).
+/// Generic specification that excludes records with specific codes (e.g., test/inactive codes).
 /// </summary>
-public class ExcludeInactiveCodesSpecification : Specification
+public class ExcludeInactiveCodesSpecification : Specification<DataRecord>
 {
     private readonly HashSet<string> _excludedCodes;
 

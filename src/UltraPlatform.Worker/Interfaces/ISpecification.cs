@@ -1,8 +1,15 @@
-using System.Linq.Expressions;
+using UltraPlatform.Worker.Models;
 
 namespace UltraPlatform.Worker.Interfaces;
 
-interface ISpecification<T, K>
+/// <summary>
+/// Specification pattern for encapsulating query logic.
+/// Allows combining multiple filter criteria in a safe, composable way.
+/// </summary>
+public interface ISpecification<T>
 {
-    Expression<Func<T,K, IQueryable>> Apply();
+    /// <summary>
+    /// Applies the specification filter to a queryable source.
+    /// </summary>
+    IEnumerable<T> Apply(IEnumerable<T> query);
 }
