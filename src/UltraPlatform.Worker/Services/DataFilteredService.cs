@@ -1,13 +1,10 @@
-
-using UltraPlatform.Worker.Interfaces;
-
 namespace UltraPlatform.Worker.Services;
 
-public class DataFilteredService : IDataService
+public class DataFilteredService
 {
-    private IDataService _inner;
+    private readonly DataService _inner;
 
-    public DataFilteredService(IDataService dataService)
+    public DataFilteredService(DataService dataService)
     {
         _inner = dataService ?? throw new ArgumentNullException(nameof(dataService));
     }
@@ -17,9 +14,9 @@ public class DataFilteredService : IDataService
         return await _inner.PublicContractMethod();
     }
 
-    public Task<bool> ComposeValidation()
+    public async Task<bool> ComposeValidation()
     {
         // Custom Validations
-        throw new NotImplementedException();
+        return await _inner.ComposeValidation();
     }
 }

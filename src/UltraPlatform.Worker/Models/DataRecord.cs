@@ -1,8 +1,8 @@
 namespace UltraPlatform.Worker.Models;
 
-internal record DataRecord
+public record DataRecord
 {
-    string Id;
-    string Code;
-    DateOnly dateOnly;
+    public string Id { get; init; } = string.Empty;
+    public string Code { get; init; } = string.Empty;
+    public DateOnly Date { get; init; }
 }
