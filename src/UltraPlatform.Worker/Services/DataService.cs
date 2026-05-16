@@ -41,6 +41,10 @@ public class DataService : IDataService
         _data.Remove(record);
     }
 
+    /// <summary>
+    /// Returns raw enumerable of today's records without filtering.
+    /// Wrapper can apply additional specifications if needed.
+    /// </summary>
     public IEnumerable<DataRecord> GetTodaysRecords()
     {
         var today = DateOnly.FromDateTime(DateTime.Now);
