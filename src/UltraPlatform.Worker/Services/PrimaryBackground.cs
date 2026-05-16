@@ -1,14 +1,15 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using UltraPlatform.Worker.Interfaces;
 
 namespace UltraPlatform.Worker.Services;
 
 internal class PrimaryBackground : BackgroundService
 {
     private readonly ILogger<PrimaryBackground> _logger;
-    private readonly DataFilteredService _dataService;
+    private readonly IDataService _dataService;
 
-    public PrimaryBackground(ILogger<PrimaryBackground> logger, DataFilteredService dataService)
+    public PrimaryBackground(ILogger<PrimaryBackground> logger, IDataService dataService)
     {
         _logger = logger;
         _dataService = dataService;

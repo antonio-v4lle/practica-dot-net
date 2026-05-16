@@ -1,13 +1,14 @@
+using UltraPlatform.Worker.Interfaces;
 using UltraPlatform.Worker.Models;
 
 namespace UltraPlatform.Worker.Services;
 
 /// <summary>
-/// Wrapper/Decorator for DataService that extends functionality with filtering and custom logic.
+/// Wrapper/Decorator for IDataService that extends functionality with filtering and custom logic.
 /// </summary>
-public class DataFilteredService
+public class DataFilteredService : IDataService
 {
-    private readonly DataService _innerService;
+    private readonly IDataService _innerService;
 
     public DataFilteredService(DataService dataService)
     {

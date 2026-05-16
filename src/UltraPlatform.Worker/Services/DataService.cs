@@ -1,8 +1,9 @@
+using UltraPlatform.Worker.Interfaces;
 using UltraPlatform.Worker.Models;
 
 namespace UltraPlatform.Worker.Services;
 
-public class DataService
+public class DataService : IDataService
 {
     private readonly List<DataRecord> _data = new();
 
