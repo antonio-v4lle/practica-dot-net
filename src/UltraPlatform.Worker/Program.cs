@@ -1,18 +1,22 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using UltraPlatform.Worker.Factories;
 using UltraPlatform.Worker.Interfaces;
 using UltraPlatform.Worker.Services;
 
 Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
-        // Core service (not directly injected)
+        // Core service
         services.AddSingleton<DataService>();
         
-        // Wrapper service implements IDataService (primary implementation)
-        services.AddSingleton<IDataService, DataFilteredService>();
+        // Wrapper service
+        services.AddSingleton<DataFilteredService>();
         
-        // Background service
+        // Factory to create appropriate IDataService based on feature flags
+        services.AddSingleton<IDataServiceFactory, DataServiceFactory>();
+        
+        // Background service - gets IDataService from factory
         services.AddHostedService<PrimaryBackground>();
     })
     .Build()

@@ -9,10 +9,10 @@ internal class PrimaryBackground : BackgroundService
     private readonly ILogger<PrimaryBackground> _logger;
     private readonly IDataService _dataService;
 
-    public PrimaryBackground(ILogger<PrimaryBackground> logger, IDataService dataService)
+    public PrimaryBackground(ILogger<PrimaryBackground> logger, IDataServiceFactory dataServiceFactory)
     {
         _logger = logger;
-        _dataService = dataService;
+        _dataService = dataServiceFactory.CreateDataService();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
