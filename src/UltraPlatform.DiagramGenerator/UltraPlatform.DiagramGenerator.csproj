@@ -9,9 +9,11 @@
 
   <ItemGroup>
     <PackageReference Include="MermaidClassDiagramGenerator" Version="1.2.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\UltraPlatform.Worker\UltraPlatform.Worker.csproj" />
   </ItemGroup>
 
 </Project>

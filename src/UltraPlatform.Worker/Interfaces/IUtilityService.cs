@@ -1,6 +1,6 @@
 namespace UltraPlatform.Worker.Interfaces;
 
-interface IUtilityService
+public interface IUtilityService
 {
     DateOnly GetToday();
 }
