@@ -28,8 +28,12 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Crear usuario coder
-RUN useradd -m -s /bin/bash coder && \
-    echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/coder && \
+#RUN useradd -m -s /bin/bash coder && \
+#    echo "coder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/coder && \
+#    chmod 0440 /etc/sudoers.d/coder
+RUN getent passwd coder >/dev/null 2>&1 \
+    || useradd -u 1000 -g 1000 -m -s /bin/bash coder; \
+    echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder; \
     chmod 0440 /etc/sudoers.d/coder
 
 # Configurar directorio de trabajo
