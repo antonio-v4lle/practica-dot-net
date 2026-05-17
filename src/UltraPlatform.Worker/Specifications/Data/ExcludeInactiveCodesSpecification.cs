@@ -1,18 +1,24 @@
 using UltraPlatform.Worker.Models;
+using UltraPlatform.Worker.Repositories;
+using UltraPlatform.Worker.Specifications;
 
 namespace UltraPlatform.Worker.Specifications.Data;
 
 /// <summary>
-/// Generic specification that excludes records with specific codes (e.g., test/inactive codes).
+/// Excludes records whose Code is in the inactive codes list from DB.
+/// Self-sufficient: loads its own data via IDataRecordRepository.
 /// </summary>
 public class ExcludeInactiveCodesSpecification : Specification<DataRecord>
 {
-    private readonly HashSet<string> _excludedCodes;
+    private readonly IDataRecordRepository _repository;
 
-    public ExcludeInactiveCodesSpecification(params string[] excludedCodes) => _excludedCodes = new HashSet<string>(excludedCodes ?? Array.Empty<string>());
+    public ExcludeInactiveCodesSpecification(IDataRecordRepository repository)
+        => _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
     public override IQueryable<DataRecord> Apply(IQueryable<DataRecord> query)
     {
-        return query.Where(r => !_excludedCodes.Contains(r.Code));
+        // Loads inactive codes from DB — executes as subquery in EF Core
+        var inactiveCodes = _repository.GetInactiveCodesQueryable();
+        return query.Where(r => !inactiveCodes.Contains(r.Code));
     }
 }

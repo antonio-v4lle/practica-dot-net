@@ -1,31 +1,17 @@
 namespace UltraPlatform.Worker.Specifications;
 
 /// <summary>
-/// Generic base class for specifications. Can be composed with AND/OR logic.
+/// Abstract base — provides And/Or/Not composition for all specs.
 /// </summary>
 public abstract class Specification<T> : ISpecification<T>
 {
     public abstract IQueryable<T> Apply(IQueryable<T> query);
 
-    public Specification<T> And(ISpecification<T> other)
-    {
-        return new AndSpecification<T>(this, other);
-    }
-
-    public Specification<T> Or(ISpecification<T> other)
-    {
-        return new OrSpecification<T>(this, other);
-    }
-
-    public Specification<T> Not()
-    {
-        return new NotSpecification<T>(this);
-    }
+    public Specification<T> And(ISpecification<T> other) => new AndSpecification<T>(this, other);
+    public Specification<T> Or(ISpecification<T> other)  => new OrSpecification<T>(this, other);
+    public Specification<T> Not()                        => new NotSpecification<T>(this);
 }
 
-/// <summary>
-/// Combines two specifications with AND logic.
-/// </summary>
 internal class AndSpecification<T> : Specification<T>
 {
     private readonly ISpecification<T> _left;
@@ -33,20 +19,14 @@ internal class AndSpecification<T> : Specification<T>
 
     public AndSpecification(ISpecification<T> left, ISpecification<T> right)
     {
-        _left = left ?? throw new ArgumentNullException(nameof(left));
+        _left  = left  ?? throw new ArgumentNullException(nameof(left));
         _right = right ?? throw new ArgumentNullException(nameof(right));
     }
 
     public override IQueryable<T> Apply(IQueryable<T> query)
-    {
-        var leftResult = _left.Apply(query);
-        return _right.Apply(leftResult);
-    }
+        => _right.Apply(_left.Apply(query));
 }
 
-/// <summary>
-/// Combines two specifications with OR logic.
-/// </summary>
 internal class OrSpecification<T> : Specification<T>
 {
     private readonly ISpecification<T> _left;
@@ -54,33 +34,24 @@ internal class OrSpecification<T> : Specification<T>
 
     public OrSpecification(ISpecification<T> left, ISpecification<T> right)
     {
-        _left = left ?? throw new ArgumentNullException(nameof(left));
+        _left  = left  ?? throw new ArgumentNullException(nameof(left));
         _right = right ?? throw new ArgumentNullException(nameof(right));
     }
 
     public override IQueryable<T> Apply(IQueryable<T> query)
-    {
-        var leftResult = _left.Apply(query);
-        var rightResult = _right.Apply(query);
-        return leftResult.Union(rightResult);
-    }
+        => _left.Apply(query).Union(_right.Apply(query));
 }
 
-/// <summary>
-/// Negates a specification (NOT logic).
-/// </summary>
 internal class NotSpecification<T> : Specification<T>
 {
-    private readonly ISpecification<T> _specification;
+    private readonly ISpecification<T> _inner;
 
-    public NotSpecification(ISpecification<T> specification)
-    {
-        _specification = specification ?? throw new ArgumentNullException(nameof(specification));
-    }
+    public NotSpecification(ISpecification<T> inner)
+        => _inner = inner ?? throw new ArgumentNullException(nameof(inner));
 
     public override IQueryable<T> Apply(IQueryable<T> query)
     {
-        var specified = _specification.Apply(query).ToHashSet();
-        return query.Except(specified);
+        var excluded = _inner.Apply(query);
+        return query.Except(excluded);
     }
 }
