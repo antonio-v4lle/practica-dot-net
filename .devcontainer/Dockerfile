@@ -48,7 +48,7 @@ USER coder
 
 # Instalar herramientas globales de .NET
 RUN dotnet tool install -g dotnet-ef && \
-    dotnet tool install -g dotnet-aspnet-codegenerator && \
+#   dotnet tool install -g dotnet-aspnet-codegenerator && \
     dotnet tool install -g dotnet-format && \
     dotnet tool install -g dotnet-outdated-tool && \
     dotnet tool install -g dotnet-trace && \
