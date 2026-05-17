@@ -17,7 +17,7 @@ public class PropertyEqualsSpecification<T, TProp> : Specification<T> where T : 
         _exclude = exclude;
     }
 
-    public override IEnumerable<T> Apply(IEnumerable<T> query)
+    public override IQueryable<T> Apply(IQueryable<T> query)
     {
         if (_exclude)
             return query.Where(item => !Equals(_propertySelector(item), _value));

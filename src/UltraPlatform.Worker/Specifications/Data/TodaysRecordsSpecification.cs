@@ -8,7 +8,7 @@ namespace UltraPlatform.Worker.Specifications.Data;
 /// </summary>
 public class TodaysRecordsSpecification : Specification<DataRecord>
 {
-    public override IEnumerable<DataRecord> Apply(IEnumerable<DataRecord> query)
+    public override IQueryable<DataRecord> Apply(IQueryable<DataRecord> query)
     {
         var today = DateOnly.FromDateTime(DateTime.Now);
         return query.Where(r => r.Date == today);

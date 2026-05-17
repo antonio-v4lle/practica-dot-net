@@ -1,21 +1,23 @@
+using System.Linq.Expressions;
+
 namespace UltraPlatform.Worker.Specifications.Generic;
 
 /// <summary>
 /// Generic specification for custom predicates.
 /// Allows wrapping any lambda as a reusable specification.
 /// </summary>
-public class PredicateSpecification<T> : Specification<T> where T : class
+public class PredicateSpecification<T> : Specification<T>
 {
-    private readonly Func<T, bool> _predicate;
+    private readonly Expression<Func<T, bool>> _predicate;
     private readonly string? _description;
 
-    public PredicateSpecification(Func<T, bool> predicate, string? description = null)
+    public PredicateSpecification(Expression<Func<T, bool>> predicate, string? description = null)
     {
         _predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
         _description = description;
     }
 
-    public override IEnumerable<T> Apply(IEnumerable<T> query)
+    public override IQueryable<T> Apply(IQueryable<T> query)
     {
         return query.Where(_predicate);
     }

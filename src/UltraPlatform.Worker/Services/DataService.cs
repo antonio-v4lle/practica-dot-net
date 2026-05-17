@@ -6,9 +6,11 @@ namespace UltraPlatform.Worker.Services;
 public class DataService : IDataService
 {
     private readonly List<DataRecord> _data = new();
+    private readonly IDataValidationHelper _helper;
 
-    public DataService()
+    public DataService(IDataValidationHelper helper)
     {
+        _helper = helper ?? throw new ArgumentNullException(nameof(helper));
     }
 
     // Repository methods (consolidated)
@@ -41,10 +43,6 @@ public class DataService : IDataService
         _data.Remove(record);
     }
 
-    /// <summary>
-    /// Returns raw enumerable of today's records without filtering.
-    /// Wrapper can apply additional specifications if needed.
-    /// </summary>
     public IEnumerable<DataRecord> GetTodaysRecords()
     {
         var today = DateOnly.FromDateTime(DateTime.Now);
@@ -57,18 +55,18 @@ public class DataService : IDataService
         return await FirstDataPrivateValidation() && await SecondDataPrivateValidation();
     }
 
-    public async Task<bool> PublicContractMethod()
-    {
-        return true;
-    }
-
+    /// <summary>
+    /// Returns bool 6 lines of logic without filtering
+    /// Wrapper can apply additional specifications if needed.
+    /// </summary>
     private async Task<bool> FirstDataPrivateValidation()
     {
-        return true;
+        var today = DateOnly.FromDateTime(DateTime.Now);
+        // Simplification of logic
+        var arbitraryValidation = _data.Where(d => d.Date == today).ToList().Count() % 2;
+        // After 6 lines and other queries for others Repositories.
+        return arbitraryValidation == 0;
     }
 
-    private async Task<bool> SecondDataPrivateValidation()
-    {
-        return true;
-    }
+    private async Task<bool> SecondDataPrivateValidation() => await _helper.SecondValidation();
 }

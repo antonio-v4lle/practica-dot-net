@@ -3,9 +3,9 @@ namespace UltraPlatform.Worker.Specifications;
 /// <summary>
 /// Generic base class for specifications. Can be composed with AND/OR logic.
 /// </summary>
-public abstract class Specification<T> : ISpecification<T> where T : class
+public abstract class Specification<T> : ISpecification<T>
 {
-    public abstract IEnumerable<T> Apply(IEnumerable<T> query);
+    public abstract IQueryable<T> Apply(IQueryable<T> query);
 
     public Specification<T> And(ISpecification<T> other)
     {
@@ -26,7 +26,7 @@ public abstract class Specification<T> : ISpecification<T> where T : class
 /// <summary>
 /// Combines two specifications with AND logic.
 /// </summary>
-internal class AndSpecification<T> : Specification<T> where T : class
+internal class AndSpecification<T> : Specification<T>
 {
     private readonly ISpecification<T> _left;
     private readonly ISpecification<T> _right;
@@ -37,7 +37,7 @@ internal class AndSpecification<T> : Specification<T> where T : class
         _right = right ?? throw new ArgumentNullException(nameof(right));
     }
 
-    public override IEnumerable<T> Apply(IEnumerable<T> query)
+    public override IQueryable<T> Apply(IQueryable<T> query)
     {
         var leftResult = _left.Apply(query);
         return _right.Apply(leftResult);
@@ -47,7 +47,7 @@ internal class AndSpecification<T> : Specification<T> where T : class
 /// <summary>
 /// Combines two specifications with OR logic.
 /// </summary>
-internal class OrSpecification<T> : Specification<T> where T : class
+internal class OrSpecification<T> : Specification<T>
 {
     private readonly ISpecification<T> _left;
     private readonly ISpecification<T> _right;
@@ -58,10 +58,10 @@ internal class OrSpecification<T> : Specification<T> where T : class
         _right = right ?? throw new ArgumentNullException(nameof(right));
     }
 
-    public override IEnumerable<T> Apply(IEnumerable<T> query)
+    public override IQueryable<T> Apply(IQueryable<T> query)
     {
-        var leftResult = _left.Apply(query).ToList();
-        var rightResult = _right.Apply(query).ToList();
+        var leftResult = _left.Apply(query);
+        var rightResult = _right.Apply(query);
         return leftResult.Union(rightResult);
     }
 }
@@ -69,7 +69,7 @@ internal class OrSpecification<T> : Specification<T> where T : class
 /// <summary>
 /// Negates a specification (NOT logic).
 /// </summary>
-internal class NotSpecification<T> : Specification<T> where T : class
+internal class NotSpecification<T> : Specification<T>
 {
     private readonly ISpecification<T> _specification;
 
@@ -78,7 +78,7 @@ internal class NotSpecification<T> : Specification<T> where T : class
         _specification = specification ?? throw new ArgumentNullException(nameof(specification));
     }
 
-    public override IEnumerable<T> Apply(IEnumerable<T> query)
+    public override IQueryable<T> Apply(IQueryable<T> query)
     {
         var specified = _specification.Apply(query).ToHashSet();
         return query.Except(specified);

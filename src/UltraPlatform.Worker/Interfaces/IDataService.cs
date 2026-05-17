@@ -14,5 +14,4 @@ public interface IDataService
 
     // Business logic methods
     Task<bool> ComposeValidation();
-    Task<bool> PublicContractMethod();
 }

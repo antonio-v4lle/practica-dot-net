@@ -16,7 +16,7 @@ public class RecordCodeSpecification : Specification<DataRecord>
         _exclude = exclude;
     }
 
-    public override IEnumerable<DataRecord> Apply(IEnumerable<DataRecord> query)
+    public override IQueryable<DataRecord> Apply(IQueryable<DataRecord> query)
     {
         if (_exclude)
             return query.Where(r => !r.Code.Contains(_codePattern));

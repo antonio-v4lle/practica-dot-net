@@ -4,7 +4,7 @@ namespace UltraPlatform.Worker.Specifications.Generic;
 /// Generic specification for filtering entities with a Date property within a range.
 /// Can be used with any type T that has a Date property (DateOnly or DateTime).
 /// </summary>
-public class DateRangeSpecification<T> : Specification<T> where T : class
+public class DateRangeSpecification<T> : Specification<T>
 {
     private readonly DateOnly _startDate;
     private readonly DateOnly _endDate;
@@ -17,12 +17,7 @@ public class DateRangeSpecification<T> : Specification<T> where T : class
         _dateSelector = dateSelector ?? throw new ArgumentNullException(nameof(dateSelector));
     }
 
-    public override IEnumerable<T> Apply(IEnumerable<T> query)
-    {
-        return query.Where(item =>
-        {
-            var date = _dateSelector(item);
-            return date >= _startDate && date <= _endDate;
-        });
-    }
+    public override IQueryable<T> Apply(IQueryable<T> query) {
+      return query.Where(item => _dateSelector(item) >= _startDate && _dateSelector(item) <= _endDate);  
+    } 
 }
