@@ -5,5 +5,5 @@ namespace UltraPlatform.Worker.Interfaces;
 /// </summary>
 public interface IDataServiceFactory
 {
-    IDataService CreateDataService();
+    IDataService CreateDataService(IServiceProvider serviceProvider);
 }

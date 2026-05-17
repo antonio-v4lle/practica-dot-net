@@ -8,16 +8,13 @@ namespace UltraPlatform.Worker.Services;
 internal class PrimaryBackground : BackgroundService
 {
     private readonly ILogger<PrimaryBackground> _logger;
-    private readonly IDataService _dataService;
     private readonly IServiceScopeFactory _scopeFactory;
 
     public PrimaryBackground(
         ILogger<PrimaryBackground> logger, 
-        IServiceScopeFactory scopeFactory,
-        IDataServiceFactory dataServiceFactory)
+        IServiceScopeFactory scopeFactory)
     {
         _logger = logger;
-        _dataService = dataServiceFactory.CreateDataService();
         _scopeFactory = scopeFactory;
     }
 
@@ -34,7 +31,7 @@ internal class PrimaryBackground : BackgroundService
 
                 var factory = scope.ServiceProvider.GetRequiredService<IDataServiceFactory>();
 
-                var svc = factory.CreateDataService();
+                var svc = factory.CreateDataService(scope.ServiceProvider);
 
                 var isValid = await svc.ComposeValidation();
 

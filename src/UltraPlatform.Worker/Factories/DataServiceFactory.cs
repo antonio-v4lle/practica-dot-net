@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using UltraPlatform.Worker.Interfaces;
 using UltraPlatform.Worker.Services;
 
@@ -7,29 +8,22 @@ namespace UltraPlatform.Worker.Factories;
 public class DataServiceFactory : IDataServiceFactory
 {
     private readonly IConfiguration _configuration;
-    private readonly DataService _coreDataService;
-    private readonly DataFilteredService _filteredDataService;
 
     public DataServiceFactory(
-        IConfiguration configuration,
-        DataService coreDataService,
-        DataFilteredService filteredDataService)
+        IConfiguration configuration)
     {
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-        _coreDataService = coreDataService ?? throw new ArgumentNullException(nameof(coreDataService));
-        _filteredDataService = filteredDataService ?? throw new ArgumentNullException(nameof(filteredDataService));
     }
 
-    public IDataService CreateDataService()
+    public IDataService CreateDataService(IServiceProvider scopedProvider)
     {
-        // Check feature flag from configuration
-        var useFiltering = _configuration.GetValue<bool>("Features:UseDataFiltering", defaultValue: true);
+        var useFiltering = _configuration
+            .GetValue<bool>("Features:UseDataFiltering", defaultValue: true);
 
-        if (useFiltering)
-        {
-            return _filteredDataService;
-        }
-
-        return _coreDataService;
+        // scopedProvider viene del scope creado en PrimaryBackground
+        // NO del root container — scoped safe
+        return useFiltering
+            ? scopedProvider.GetRequiredService<DataFilteredService>()
+            : scopedProvider.GetRequiredService<DataService>();
     }
 }

@@ -1,4 +1,5 @@
 using UltraPlatform.Worker.Models;
+using UltraPlatform.Worker.Interfaces;
 using UltraPlatform.Worker.Specifications;
 
 namespace UltraPlatform.Worker.Specifications.Data;
