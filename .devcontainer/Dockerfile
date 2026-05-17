@@ -35,7 +35,10 @@ RUN getent passwd coder >/dev/null 2>&1 \
     || useradd -u 1000 -g 1000 -m -s /bin/bash coder; \
     echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder; \
     chmod 0440 /etc/sudoers.d/coder
-
+RUN groupadd -g 1000 coder 2>/dev/null || true; \
+    useradd -u 1000 -g 1000 -m -s /bin/bash coder 2>/dev/null || true; \
+    echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/coder; \
+    chmod 0440 /etc/sudoers.d/coder
 # Configurar directorio de trabajo
 WORKDIR /workspaces
 RUN chown -R coder:coder /workspaces
