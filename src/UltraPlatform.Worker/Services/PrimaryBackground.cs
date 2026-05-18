@@ -35,9 +35,9 @@ internal class PrimaryBackground : BackgroundService
 
                 var isValid = await svc.ComposeValidation();
 
-                _logger.LogInformation("Validation result: {isValid} at {time}", isValid, DateTimeOffset.Now);
+                _logger.LogInformation("Validation result: {isValid} at {time}, Service: {service}", isValid, DateTimeOffset.Now, svc.GetType().Name);
                 
-                await Task.Delay(TimeSpan.FromSeconds(20), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
             }
             catch (OperationCanceledException)
             {

@@ -20,6 +20,9 @@ public class DataServiceFactory : IDataServiceFactory
         var useFiltering = _configuration
             .GetValue<bool>("Features:UseDataFiltering", defaultValue: true);
 
+        Random random = new Random();
+        useFiltering = random.Next(2) == 0; // 50% chance true/false
+
         // scopedProvider viene del scope creado en PrimaryBackground
         // NO del root container — scoped safe
         return useFiltering
